@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ValVenalEstimatorApi.Data;
-using ValVenalEstimatorApi.Models;
 using Microsoft.EntityFrameworkCore;
 using ValVenalEstimatorApi.Repositories;
 using ValVenalEstimatorApi.Contracts;
@@ -30,8 +29,9 @@ namespace ValVenalEstimatorApi
                                                                         .AllowAnyMethod()
                                                                 )
                             );
-            services.AddDbContext<ValVenalEstimatorDbContext>(opt => opt.UseMySQL("server=localhost;database=ValVenalEstimator;user=root;password="));
+            services.AddDbContext<ValVenalEstimatorDbContext>(opt => opt.UseMySQL("server=localhost;database=ValVenalEstimator2;user=root;password="));
             services.AddScoped<IPlaceRepository, PlaceRepository>();
+            services.AddScoped<IPrefectureRepository, PrefectureRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

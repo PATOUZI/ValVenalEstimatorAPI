@@ -41,22 +41,16 @@ namespace ValVenalEstimatorApi.Controllers
             return await _iPlaceRepository.GetAllPlaces();
         }
 
-        [HttpGet ("prefecture/{prefecture}")]
-        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByPrefecture(string prefecture)
+        [HttpGet ("prefecture/{idPrefecture}")]
+        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long IdPrefecture)
         {
-            return await _iPlaceRepository.GetPlacesByPrefecture(prefecture);
+            return await _iPlaceRepository.GetPlacesByIdPrefecture(IdPrefecture);
         }
 
-        [HttpGet ("district/{prefecture}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetDistrictByPrefecture(string prefecture)
+        [HttpGet ("district/{idPrefecture}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetDistrictsByIdPrefecture(long IdPrefecture)
         {
-           return await _iPlaceRepository.GetDistrictByPrefecture(prefecture);
-        }
-        
-        [HttpGet ("prefecture")]
-        public async Task<ActionResult<IEnumerable<string>>> GetPrefectures()
-        {
-           return await _iPlaceRepository.GetPrefectures();
+           return await _iPlaceRepository.GetDistrictsByIdPrefecture(IdPrefecture);
         }
 
         [HttpPut("{id}")]
@@ -73,7 +67,7 @@ namespace ValVenalEstimatorApi.Controllers
                 return NotFound();
             }
 
-            p.Value.Prefecture = place.Prefecture;
+            //AR p.Value.Prefecture = place.Prefecture;
             p.Value.District = place.District;
             p.Value.PricePerMeterSquare = place.PricePerMeterSquare;
 
@@ -85,9 +79,7 @@ namespace ValVenalEstimatorApi.Controllers
             {
                 return NotFound();
             }
-
             return StatusCode(200);
-            //return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -99,17 +91,9 @@ namespace ValVenalEstimatorApi.Controllers
             {
                 return NotFound();    
             }
-     
-            _iPlaceRepository.Remove(place.Value);
-            //_valVenalEstDbContext.Places.Remove(place);   
-            
+            _iPlaceRepository.Remove(place.Value);            
             _iPlaceRepository.SaveChange();                                   
-            //await _valVenalEstDbContext.SaveChangesAsync();
-
             return StatusCode(202);
-            //return NoContent();
-            
-            //return await _iPlaceRepository.DeletePlace(id);
         }
     
         [HttpPost("{accessPath}", Name = "LoadDataInDbByPost")]
@@ -138,9 +122,9 @@ namespace ValVenalEstimatorApi.Controllers
         }*/    
 
         [HttpGet("{pref}/{dist}/{area}", Name = "GetValVenal")]
-        public async Task<ActionResult<ValVenalDTO>> GetValVenal(string pref, string dist, int area)
+        public async Task<ActionResult<ValVenalDTO>> GetValVenal(long idPref, string dist, int area)
         {
-            var localite = await _iPlaceRepository.GetPlaceByPrefectureAndDistrict(pref, dist);
+            var localite = await _iPlaceRepository.GetPlaceByIdPrefectureAndDistrict(idPref, dist);
             if (localite == null)
             {
                 return NotFound();

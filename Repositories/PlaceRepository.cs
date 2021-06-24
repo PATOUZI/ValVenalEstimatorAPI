@@ -38,48 +38,41 @@ namespace ValVenalEstimatorApi.Repositories
         }
         public async Task<ActionResult<IEnumerable<Place>>> GetAllPlaces()
         {
-            return await _valVenalEstDbContext.Places.ToListAsync();
-        } 
-        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByPrefecture(string prefecture)
-        {
-            return await _valVenalEstDbContext.Places
-                            .Where(o => o.Prefecture == prefecture)
-                            .ToListAsync();
-        }   
-        public async Task<ActionResult<IEnumerable<string>>> GetDistrictByPrefecture(string prefecture)
-        {
-            return await _valVenalEstDbContext.Places
-                            .Where(o => o.Prefecture == prefecture)
-                            .Select(o => o.District)
-                            .Distinct()
-                            .OrderBy(o => o)
-                            .ToListAsync();
-        } 
-        public async Task<ActionResult<IEnumerable<string>>> GetPrefectures()
-        {
-            return await _valVenalEstDbContext.Places
-                            .Select(o => o.Prefecture)
-                            .Distinct()
-                            .OrderBy(o => o)
-                            .ToListAsync();
-        }               
+            return await _valVenalEstDbContext.Places.Include(p => p.Prefecture).ToListAsync();
+        }                 
         public async Task<IActionResult> DeletePlace(long id)
         {
             var place = await _valVenalEstDbContext.Places.FindAsync(id);
 
             if (place == null)
             {
-                //return NotFound();
                 return null;     
-            }
-     
+            }     
             _valVenalEstDbContext.Places.Remove(place);                                      
             await _valVenalEstDbContext.SaveChangesAsync();
-
-            //return NoContent();
             return null;
         }
-
+        public async Task<ActionResult<IEnumerable<string>>> GetDistrictsByIdPrefecture(long IdPrefecture)
+        {
+            return await _valVenalEstDbContext.Places
+                            .Where(o => o.PrefectureId == IdPrefecture)
+                            .Select(o => o.District)
+                            .Distinct()
+                            .OrderBy(o => o)
+                            .ToListAsync();
+        }
+        public async Task<Place> GetPlaceByIdPrefectureAndDistrict(long IdPrefecture, string dist)
+        {
+            return await _valVenalEstDbContext.Places
+                                        .Where(place => place.PrefectureId == IdPrefecture && place.District == dist)
+                                        .FirstOrDefaultAsync();    
+        }
+        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long IdPrefecture)
+        {
+             return await _valVenalEstDbContext.Places
+                            .Where(o => o.PrefectureId == IdPrefecture)
+                            .ToListAsync();
+        }
         public async void LoadDataInDbWithCsvFile(string accessPath)
         {
             using (var reader = new StreamReader(accessPath))   
@@ -89,7 +82,7 @@ namespace ValVenalEstimatorApi.Repositories
                 foreach (var p in records)
                 {
                     Place place = new Place();
-                    place.Prefecture = p.Prefecture;
+                    //AR place.Prefecture = p.Prefecture;
                     place.District = p.District;
                     place.PricePerMeterSquare = p.PricePerMeterSquare;   
                     _valVenalEstDbContext.Add<Place>(place);               
@@ -97,13 +90,7 @@ namespace ValVenalEstimatorApi.Repositories
                     //AddPlace(place);
                 }
             }
-        }
-        public async Task<Place> GetPlaceByPrefectureAndDistrict(string pref, string dist)
-        {
-            return await _valVenalEstDbContext.Places
-                                        .Where(place => place.Prefecture == pref  && place.District == dist)
-                                        .FirstOrDefaultAsync();    
-        }         
+        }       
         public async void SaveChange()
         {
             await _valVenalEstDbContext.SaveChangesAsync();
