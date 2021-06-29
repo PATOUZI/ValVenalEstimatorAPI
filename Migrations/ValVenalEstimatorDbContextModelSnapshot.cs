@@ -49,7 +49,7 @@ namespace ValVenalEstimatorApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Prefecture");
+                    b.ToTable("Prefectures");
                 });
 
             modelBuilder.Entity("ValVenalEstimatorApi.Models.Place", b =>

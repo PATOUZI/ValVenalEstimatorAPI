@@ -42,15 +42,15 @@ namespace ValVenalEstimatorApi.Controllers
         }
 
         [HttpGet ("prefecture/{idPrefecture}")]
-        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long IdPrefecture)
+        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long idPrefecture)
         {
-            return await _iPlaceRepository.GetPlacesByIdPrefecture(IdPrefecture);
+            return await _iPlaceRepository.GetPlacesByIdPrefecture(idPrefecture);
         }
 
         [HttpGet ("district/{idPrefecture}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetDistrictsByIdPrefecture(long IdPrefecture)
+        public async Task<ActionResult<IEnumerable<string>>> GetDistrictsByIdPrefecture(long idPrefecture)
         {
-           return await _iPlaceRepository.GetDistrictsByIdPrefecture(IdPrefecture);
+           return await _iPlaceRepository.GetDistrictsByIdPrefecture(idPrefecture);
         }
 
         [HttpPut("{id}")]
@@ -121,7 +121,7 @@ namespace ValVenalEstimatorApi.Controllers
             return Ok(GetAllPlaces());
         }*/    
 
-        [HttpGet("{pref}/{dist}/{area}", Name = "GetValVenal")]
+        [HttpGet("{idPref}/{dist}/{area}", Name = "GetValVenal")]
         public async Task<ActionResult<ValVenalDTO>> GetValVenal(long idPref, string dist, int area)
         {
             var localite = await _iPlaceRepository.GetPlaceByIdPrefectureAndDistrict(idPref, dist);

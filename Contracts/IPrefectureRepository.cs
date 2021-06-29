@@ -11,6 +11,7 @@ namespace ValVenalEstimatorApi.Contracts
         public Task<ActionResult<Prefecture>> GetPrefecture(long id);
         public Task<ActionResult<IEnumerable<Prefecture>>> GetAllPrefectures();
         public Task<IActionResult> DeletePrefecture(long id);
+        public void LoadDataInDbWithCsvFile(string accessPath);
         public void SaveChange();
         public bool PrefectureExists(long id);
         public void Remove(Prefecture prefecture);

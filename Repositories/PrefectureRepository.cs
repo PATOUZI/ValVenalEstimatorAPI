@@ -1,5 +1,6 @@
 using ValVenalEstimatorApi.Contracts;
 using ValVenalEstimatorApi.Data;
+using ValVenalEstimatorApi.ViewModels;
 using System.Threading.Tasks;
 using ValVenalEstimatorApi.Models;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using CsvHelper;
 
 namespace ValVenalEstimatorApi.Repositories
 {
@@ -51,6 +53,22 @@ namespace ValVenalEstimatorApi.Repositories
             _valVenalEstDbContext.Prefectures.Remove(prefecture);                                      
             await _valVenalEstDbContext.SaveChangesAsync();
             return null;
+        }
+
+        public async void LoadDataInDbWithCsvFile(string accessPath)
+        {
+            using (var reader = new StreamReader(accessPath))   
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                var records = csv.GetRecords<PrefectureDTO>();
+                foreach (var p in records)
+                {
+                    Prefecture prefecture = new Prefecture();
+                    prefecture.Name = p.Name;
+                    _valVenalEstDbContext.Add<Prefecture>(prefecture);               
+                    await _valVenalEstDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public async void SaveChange()

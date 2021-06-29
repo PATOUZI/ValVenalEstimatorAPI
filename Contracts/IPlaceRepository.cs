@@ -7,7 +7,7 @@ namespace ValVenalEstimatorApi.Contracts
 {
     public interface IPlaceRepository
     {
-        public Task <Place> AddPlace(Place place);
+        public Task<Place> AddPlace(Place place);
         public Task<ActionResult<Place>> GetPlace(long id);
         public Task<ActionResult<IEnumerable<Place>>> GetAllPlaces();
         public Task<IActionResult> DeletePlace(long id);

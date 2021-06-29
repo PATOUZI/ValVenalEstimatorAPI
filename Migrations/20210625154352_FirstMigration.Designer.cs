@@ -8,8 +8,8 @@ using ValVenalEstimatorApi.Data;
 namespace ValVenalEstimatorApi.Migrations
 {
     [DbContext(typeof(ValVenalEstimatorDbContext))]
-    [Migration("20210623102026_DbChangeMigration")]
-    partial class DbChangeMigration
+    [Migration("20210625154352_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace ValVenalEstimatorApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Prefecture");
+                    b.ToTable("Prefectures");
                 });
 
             modelBuilder.Entity("ValVenalEstimatorApi.Models.Place", b =>

@@ -82,5 +82,11 @@ namespace ValVenalEstimatorApi.Controllers
             _iPrefectureRepository.SaveChange();                                   
             return StatusCode(202);          
         }
+
+        [HttpPost("{accessPath}", Name = "LoadData")]
+        public void LoadDataInDbByPost(string accessPath)
+        {
+            _iPrefectureRepository.LoadDataInDbWithCsvFile(accessPath);
+        } 
     }
 }

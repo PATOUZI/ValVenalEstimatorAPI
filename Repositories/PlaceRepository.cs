@@ -15,16 +15,27 @@ namespace ValVenalEstimatorApi.Repositories
 {
     public class PlaceRepository : IPlaceRepository 
     {
-        readonly ValVenalEstimatorDbContext _valVenalEstDbContext;        
-        public PlaceRepository(ValVenalEstimatorDbContext context)
+        readonly ValVenalEstimatorDbContext _valVenalEstDbContext;  
+        readonly IPrefectureRepository _iPrefectureRepository;
+
+        public PlaceRepository(ValVenalEstimatorDbContext context, IPrefectureRepository iPrefRepository)
         {  
-            _valVenalEstDbContext = context;   
+            _valVenalEstDbContext = context; 
+            _iPrefectureRepository = iPrefRepository;  
         } 
         public async Task<Place> AddPlace(Place place)
         {
-            _valVenalEstDbContext.Add(place);
-            await _valVenalEstDbContext.SaveChangesAsync();
-            return place;
+            var existingPrefecture = _iPrefectureRepository.PrefectureExists(place.PrefectureId);
+            if (existingPrefecture == true)
+            {
+                _valVenalEstDbContext.Add(place);
+                await _valVenalEstDbContext.SaveChangesAsync();
+                return place;
+            } 
+            else
+            {
+                return null;
+            }        
         }
         public async Task<ActionResult<Place>> GetPlace(long id)
         {
@@ -82,9 +93,9 @@ namespace ValVenalEstimatorApi.Repositories
                 foreach (var p in records)
                 {
                     Place place = new Place();
-                    //AR place.Prefecture = p.Prefecture;
                     place.District = p.District;
                     place.PricePerMeterSquare = p.PricePerMeterSquare;   
+                    place.PrefectureId = p.PrefectureId;
                     _valVenalEstDbContext.Add<Place>(place);               
                     await _valVenalEstDbContext.SaveChangesAsync();
                     //AddPlace(place);
