@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj": {}
+    "f:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj": {}
   },
   "projects": {
-    "F:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj": {
+    "f:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj",
+        "projectUniqueName": "f:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj",
         "projectName": "ValVenalEstimatorApi",
-        "projectPath": "F:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj",
+        "projectPath": "f:\\ASP.NET Core projects\\ValVenalEstimatorApi\\ValVenalEstimatorApi.csproj",
         "packagesPath": "C:\\Users\\Paul\\.nuget\\packages\\",
-        "outputPath": "F:\\ASP.NET Core projects\\ValVenalEstimatorApi\\obj\\",
+        "outputPath": "f:\\ASP.NET Core projects\\ValVenalEstimatorApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Paul\\AppData\\Roaming\\NuGet\\NuGet.Config",

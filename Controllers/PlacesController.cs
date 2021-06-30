@@ -68,7 +68,7 @@ namespace ValVenalEstimatorApi.Controllers
             }
 
             //AR p.Value.Prefecture = place.Prefecture;
-            p.Value.District = place.District;
+            p.Value.Name = place.Name;
             p.Value.PricePerMeterSquare = place.PricePerMeterSquare;
 
             try

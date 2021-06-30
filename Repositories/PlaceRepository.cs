@@ -67,7 +67,7 @@ namespace ValVenalEstimatorApi.Repositories
         {
             return await _valVenalEstDbContext.Places
                             .Where(o => o.PrefectureId == IdPrefecture)
-                            .Select(o => o.District)
+                            .Select(o => o.Name)
                             .Distinct()
                             .OrderBy(o => o)
                             .ToListAsync();
@@ -75,7 +75,7 @@ namespace ValVenalEstimatorApi.Repositories
         public async Task<Place> GetPlaceByIdPrefectureAndDistrict(long IdPrefecture, string dist)
         {
             return await _valVenalEstDbContext.Places
-                                        .Where(place => place.PrefectureId == IdPrefecture && place.District == dist)
+                                        .Where(place => place.PrefectureId == IdPrefecture && place.Name == dist)
                                         .FirstOrDefaultAsync();    
         }
         public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long IdPrefecture)
@@ -93,7 +93,7 @@ namespace ValVenalEstimatorApi.Repositories
                 foreach (var p in records)
                 {
                     Place place = new Place();
-                    place.District = p.District;
+                    place.Name = p.District;
                     place.PricePerMeterSquare = p.PricePerMeterSquare;   
                     place.PrefectureId = p.PrefectureId;
                     _valVenalEstDbContext.Add<Place>(place);               

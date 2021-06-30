@@ -6,10 +6,8 @@ namespace ValVenalEstimatorApi.Models
     {
         [Key]
         public long Id { get; set; }
-        public string District { get; set; }
-        public double PricePerMeterSquare { get; set; }
-        public Prefecture Prefecture { get; set; }
-        public long PrefectureId { get; set; }
-
+        public string Name { get; set; }
+        public long ZoneId { get; set; }
+        public Zone Zone { get; set; }
     }
 }
