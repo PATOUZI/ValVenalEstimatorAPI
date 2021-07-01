@@ -16,17 +16,17 @@ namespace ValVenalEstimatorApi.Repositories
     public class PlaceRepository : IPlaceRepository 
     {
         readonly ValVenalEstimatorDbContext _valVenalEstDbContext;  
-        readonly IPrefectureRepository _iPrefectureRepository;
+        readonly IZoneRepository _izoneRepository;
 
-        public PlaceRepository(ValVenalEstimatorDbContext context, IPrefectureRepository iPrefRepository)
+        public PlaceRepository(ValVenalEstimatorDbContext context, IZoneRepository izoneRepository)
         {  
             _valVenalEstDbContext = context; 
-            _iPrefectureRepository = iPrefRepository;  
+            _izoneRepository = izoneRepository;
         } 
         public async Task<Place> AddPlace(Place place)
         {
-            var existingPrefecture = _iPrefectureRepository.PrefectureExists(place.PrefectureId);
-            if (existingPrefecture == true)
+            var existingZone = _izoneRepository.ZoneExists(place.ZoneId);
+            if (existingZone == true)
             {
                 _valVenalEstDbContext.Add(place);
                 await _valVenalEstDbContext.SaveChangesAsync();
@@ -37,9 +37,9 @@ namespace ValVenalEstimatorApi.Repositories
                 return null;
             }        
         }
-        public async Task<ActionResult<Place>> GetPlace(long id)
+        public async Task<Place> GetPlace(long id)
         {
-            var place = await _valVenalEstDbContext.Places.FindAsync(id);
+            var place = await _valVenalEstDbContext.Places.FindAsync(id); //Include(p => p.Zone)
 
             if (place == null)
             {
@@ -47,14 +47,13 @@ namespace ValVenalEstimatorApi.Repositories
             }
             return place;
         }
-        public async Task<ActionResult<IEnumerable<Place>>> GetAllPlaces()
+        public async Task<IEnumerable<Place>> GetAllPlaces()
         {
-            return await _valVenalEstDbContext.Places.Include(p => p.Prefecture).ToListAsync();
+            return await _valVenalEstDbContext.Places.Include(p => p.Zone).ToListAsync();
         }                 
         public async Task<IActionResult> DeletePlace(long id)
         {
             var place = await _valVenalEstDbContext.Places.FindAsync(id);
-
             if (place == null)
             {
                 return null;     
@@ -63,25 +62,10 @@ namespace ValVenalEstimatorApi.Repositories
             await _valVenalEstDbContext.SaveChangesAsync();
             return null;
         }
-        public async Task<ActionResult<IEnumerable<string>>> GetDistrictsByIdPrefecture(long IdPrefecture)
-        {
-            return await _valVenalEstDbContext.Places
-                            .Where(o => o.PrefectureId == IdPrefecture)
-                            .Select(o => o.Name)
-                            .Distinct()
-                            .OrderBy(o => o)
-                            .ToListAsync();
-        }
-        public async Task<Place> GetPlaceByIdPrefectureAndDistrict(long IdPrefecture, string dist)
-        {
-            return await _valVenalEstDbContext.Places
-                                        .Where(place => place.PrefectureId == IdPrefecture && place.Name == dist)
-                                        .FirstOrDefaultAsync();    
-        }
-        public async Task<ActionResult<IEnumerable<Place>>> GetPlacesByIdPrefecture(long IdPrefecture)
+        public async Task<IEnumerable<Place>> GetPlacesByZoneId(long IdZone)
         {
              return await _valVenalEstDbContext.Places
-                            .Where(o => o.PrefectureId == IdPrefecture)
+                            .Where(o => o.ZoneId == IdZone)
                             .ToListAsync();
         }
         public async void LoadDataInDbWithCsvFile(string accessPath)
@@ -93,9 +77,8 @@ namespace ValVenalEstimatorApi.Repositories
                 foreach (var p in records)
                 {
                     Place place = new Place();
-                    place.Name = p.District;
-                    place.PricePerMeterSquare = p.PricePerMeterSquare;   
-                    place.PrefectureId = p.PrefectureId;
+                    place.Name = p.Name;
+                    place.ZoneId = p.ZoneId;
                     _valVenalEstDbContext.Add<Place>(place);               
                     await _valVenalEstDbContext.SaveChangesAsync();
                     //AddPlace(place);

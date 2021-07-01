@@ -11,6 +11,6 @@ namespace ValVenalEstimatorApi.Data
         }
         public DbSet<Place> Places { get; set; }
         public DbSet<Prefecture> Prefectures { get; set; }
-        
+        public DbSet<Zone> Zones { get; set; }
     }
 }

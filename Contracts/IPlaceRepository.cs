@@ -10,11 +10,10 @@ namespace ValVenalEstimatorApi.Contracts
         public Task<Place> AddPlace(Place place);
         public Task<Place> GetPlace(long id);
         public Task<IEnumerable<Place>> GetAllPlaces();
-        public Task DeletePlace(long id);
+        public Task<IActionResult> DeletePlace(long id);
         public void LoadDataInDbWithCsvFile(string accessPath);
-        public Task<IEnumerable<Place>> GetPlacesByPrefectureId(long IdPrefecture);
-        public Task<IEnumerable<Place>> GetPlacesByZoneId(long IdPrefecture);
-        public Task<IEnumerable<string>> GetPalcesByIdPrefecture(long IdPrefecture);
+        //public Task<IEnumerable<Place>> GetPlacesByPrefectureId(long IdPrefecture);
+        public Task<IEnumerable<Place>> GetPlacesByZoneId(long IdZone);
         public void SaveChange();
         public bool PlaceExists(long id);
         public void Remove(Place place);

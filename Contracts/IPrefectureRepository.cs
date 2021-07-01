@@ -7,9 +7,9 @@ namespace ValVenalEstimatorApi.Contracts
 {
     public interface IPrefectureRepository
     {
-        public Task <Prefecture> AddPrefecture(Prefecture prefecture);
-        public Task<ActionResult<Prefecture>> GetPrefecture(long id);
-        public Task<ActionResult<IEnumerable<Prefecture>>> GetAllPrefectures();
+        public Task<Prefecture> AddPrefecture(Prefecture prefecture);
+        public Task<Prefecture> GetPrefecture(long id);
+        public Task<IEnumerable<Prefecture>> GetAllPrefectures();
         public Task<IActionResult> DeletePrefecture(long id);
         public void LoadDataInDbWithCsvFile(string accessPath);
         public void SaveChange();

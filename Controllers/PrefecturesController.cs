@@ -30,13 +30,13 @@ namespace ValVenalEstimatorApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Prefecture>> GetPrefecture(long id)
+        public async Task<Prefecture> GetPrefecture(long id)
         {
             return await _iPrefectureRepository.GetPrefecture(id);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Prefecture>>> GetAllPrefectures()
+        public async Task<IEnumerable<Prefecture>> GetAllPrefectures()
         {
             return await _iPrefectureRepository.GetAllPrefectures();
         }
@@ -55,7 +55,7 @@ namespace ValVenalEstimatorApi.Controllers
                 return NotFound();
             }
 
-            p.Value.Name = prefecture.Name;
+            p.Name = prefecture.Name;
 
             try
             {
@@ -78,12 +78,12 @@ namespace ValVenalEstimatorApi.Controllers
             {
                 return NotFound();    
             }     
-            _iPrefectureRepository.Remove(prefecture.Value);           
+            _iPrefectureRepository.Remove(prefecture);           
             _iPrefectureRepository.SaveChange();                                   
             return StatusCode(202);          
         }
 
-        [HttpPost("{accessPath}", Name = "LoadData")]
+        [HttpPost("{accessPath}")]
         public void LoadDataInDbByPost(string accessPath)
         {
             _iPrefectureRepository.LoadDataInDbWithCsvFile(accessPath);

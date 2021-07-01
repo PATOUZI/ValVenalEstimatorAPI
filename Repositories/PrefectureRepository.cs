@@ -26,7 +26,7 @@ namespace ValVenalEstimatorApi.Repositories
             await _valVenalEstDbContext.SaveChangesAsync();
             return prefecture;
         }
-        public async Task<ActionResult<Prefecture>> GetPrefecture(long id)
+        public async Task<Prefecture> GetPrefecture(long id)
         {
             var prefecture = await _valVenalEstDbContext.Prefectures.FindAsync(id);
 
@@ -37,7 +37,7 @@ namespace ValVenalEstimatorApi.Repositories
             return prefecture;
         }
 
-        public async Task<ActionResult<IEnumerable<Prefecture>>> GetAllPrefectures()
+        public async Task<IEnumerable<Prefecture>> GetAllPrefectures()
         {
             return await _valVenalEstDbContext.Prefectures.ToListAsync();
         }

@@ -8,7 +8,7 @@ using ValVenalEstimatorApi.Data;
 namespace ValVenalEstimatorApi.Migrations
 {
     [DbContext(typeof(ValVenalEstimatorDbContext))]
-    [Migration("20210625154352_FirstMigration")]
+    [Migration("20210701104039_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,18 +24,15 @@ namespace ValVenalEstimatorApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<string>("District")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<long>("PrefectureId")
+                    b.Property<long>("ZoneId")
                         .HasColumnType("bigint");
-
-                    b.Property<double>("PricePerMeterSquare")
-                        .HasColumnType("double");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrefectureId");
+                    b.HasIndex("ZoneId");
 
                     b.ToTable("Places");
                 });
@@ -54,10 +51,52 @@ namespace ValVenalEstimatorApi.Migrations
                     b.ToTable("Prefectures");
                 });
 
+            modelBuilder.Entity("ValVenalEstimatorApi.Models.Zone", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<long>("PrefectureId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("PricePerMeterSquare")
+                        .HasColumnType("double");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ZoneNum")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrefectureId");
+
+                    b.ToTable("Zones");
+                });
+
             modelBuilder.Entity("ValVenalEstimatorApi.Models.Place", b =>
                 {
-                    b.HasOne("ValVenalEstimatorApi.Models.Prefecture", "Prefecture")
+                    b.HasOne("ValVenalEstimatorApi.Models.Zone", "Zone")
                         .WithMany("Places")
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("ValVenalEstimatorApi.Models.Zone", b =>
+                {
+                    b.HasOne("ValVenalEstimatorApi.Models.Prefecture", "Prefecture")
+                        .WithMany("Zones")
                         .HasForeignKey("PrefectureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -66,6 +105,11 @@ namespace ValVenalEstimatorApi.Migrations
                 });
 
             modelBuilder.Entity("ValVenalEstimatorApi.Models.Prefecture", b =>
+                {
+                    b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("ValVenalEstimatorApi.Models.Zone", b =>
                 {
                     b.Navigation("Places");
                 });

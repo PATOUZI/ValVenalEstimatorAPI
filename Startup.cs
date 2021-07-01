@@ -8,6 +8,7 @@ using ValVenalEstimatorApi.Data;
 using Microsoft.EntityFrameworkCore;
 using ValVenalEstimatorApi.Repositories;
 using ValVenalEstimatorApi.Contracts;
+using System.Text.Json.Serialization;
 
 namespace ValVenalEstimatorApi
 {
@@ -23,6 +24,12 @@ namespace ValVenalEstimatorApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+                services.AddControllers().AddJsonOptions(x =>
+                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+                 
+                var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+                json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;
+                json.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
 
             services.AddCors(options => options.AddDefaultPolicy(b => b.AllowAnyOrigin()
                                                                         .AllowAnyHeader()
@@ -32,6 +39,7 @@ namespace ValVenalEstimatorApi
             services.AddDbContext<ValVenalEstimatorDbContext>(opt => opt.UseMySQL("server=localhost;database=ValVenalEstimator2;user=root;password="));
             services.AddScoped<IPlaceRepository, PlaceRepository>();
             services.AddScoped<IPrefectureRepository, PrefectureRepository>();
+            services.AddScoped<IZoneRepository, ZoneRepository>();            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
