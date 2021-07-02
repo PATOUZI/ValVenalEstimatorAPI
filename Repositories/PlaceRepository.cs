@@ -28,6 +28,8 @@ namespace ValVenalEstimatorApi.Repositories
             var existingZone = _izoneRepository.ZoneExists(place.ZoneId);
             if (existingZone == true)
             {
+                var zone = _izoneRepository.GetZone(place.ZoneId);
+                place.Zone = zone.Result;
                 _valVenalEstDbContext.Add(place);
                 await _valVenalEstDbContext.SaveChangesAsync();
                 return place;
@@ -39,7 +41,8 @@ namespace ValVenalEstimatorApi.Repositories
         }
         public async Task<Place> GetPlace(long id)
         {
-            var place = await _valVenalEstDbContext.Places.FindAsync(id); //Include(p => p.Zone)
+            var place = await _valVenalEstDbContext.Places.FindAsync(id);
+                                                           //Include(p => p.Zone)
 
             if (place == null)
             {

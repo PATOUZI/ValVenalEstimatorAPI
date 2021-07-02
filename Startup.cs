@@ -26,10 +26,6 @@ namespace ValVenalEstimatorApi
         {
                 services.AddControllers().AddJsonOptions(x =>
                  x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-                 
-                var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-                json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;
-                json.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
 
             services.AddCors(options => options.AddDefaultPolicy(b => b.AllowAnyOrigin()
                                                                         .AllowAnyHeader()

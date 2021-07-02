@@ -20,14 +20,15 @@ namespace ValVenalEstimatorApi.Controllers
         }   
 
         [HttpPost]
-        public async Task<ActionResult<Zone>> AddZone(Zone zone)
+        public async Task<Zone> AddZone(Zone zone)
         {
             await _iZoneRepository.AddZone(zone);
-            return CreatedAtAction(
+            /*return CreatedAtAction(
                 nameof(AddZone),
                 new { id = zone.Id },
                 zone
-            );
+            );*/
+            return zone;
         }
 
         [HttpGet("{id}")]

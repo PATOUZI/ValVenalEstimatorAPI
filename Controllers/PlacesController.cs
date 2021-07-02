@@ -19,14 +19,15 @@ namespace ValVenalEstimatorApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Place>> AddPlace(Place place)
+        public async Task<Place> AddPlace(Place place)
         {
             await _iPlaceRepository.AddPlace(place);
-            return CreatedAtAction(
+            /*return CreatedAtAction(
                 nameof(AddPlace),
                 new { id = place.Id },
                 place
-            );
+            );*/
+            return place;
         }
 
         [HttpGet("{id}")]
